@@ -5,5 +5,14 @@
 artifacts
 cache
 .env
-
+.cache/*.jwt
 .settings
+
+artifacts
+cache
+
+target
+
+Prover.toml
+Verifier.toml
+crs

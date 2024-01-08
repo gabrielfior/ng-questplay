@@ -2,13 +2,12 @@ import chalk from 'chalk';
 import dotenv from 'dotenv';
 import inquirer from 'inquirer';
 import fs from 'fs';
-import path from 'path';
 import { mainPath, navigateToMainDirectory, readSettings } from './utils/navigation.js';
 import { QuestDownloader } from './utils/downloader.js';
 import { getQuest } from './quest/index.js';
 
-import { 
-  CREDENTIALS_NOT_FOUND_MESSAGE, 
+import {
+  BAD_TOKEN_MESSAGE,
   NavigateToQuestMessage, 
   QUEST_ALREADY_EXISTS_MESSAGE, 
   QUEST_NOT_FOUND_MESSAGE, 
@@ -96,18 +95,28 @@ async function queryAndPullQuest(quest) {
 
   dotenv.config({ path: './.env' });
   const token = process.env.GITHUB_TOKEN;
-  if (token == undefined) {
-    console.log(CREDENTIALS_NOT_FOUND_MESSAGE);
-    process.exit(1);
+  
+  let options = {};
+  if (token != undefined) {
+    options.github = { auth: token };
   }
 
-  const authDownloader = new QuestDownloader({
-    github: { auth: token }
-  });
+  const authDownloader = new QuestDownloader(options);
 
-  await authDownloader.downloadDirectory(
-    'NodeGuardians', quest.fromRepository, quest.downloadPath()
-  );
+  try {
+    await authDownloader.downloadQuest(
+        'NodeGuardians', 
+        quest.fromRepository, 
+        quest.downloadPath()
+    );
+    } catch (err) {
+        if (err.status == 401) {
+            console.log(BAD_TOKEN_MESSAGE);
+        } else {
+            console.log(err);
+        }
+        process.exit(1);
+    }
 
   // (3) Install Quest
   console.log(chalk.green("\nInstalling quest..."));
