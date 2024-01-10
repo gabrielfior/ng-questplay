@@ -1,7 +1,7 @@
 use dep::std::collections::vec::Vec;
 
 use crate::dungeon::Square;
-use crate::dungeon::is_safe_path;
+use crate::dungeon::{is_safe_path, is_valid_path};
 
 #[test]
 fn test_no_watchers_safe() {
@@ -19,6 +19,29 @@ fn test_no_watchers_safe() {
     ];
 
     is_safe_path(path, watcher_map);
+}
+
+#[test]
+fn test_solution(){
+    let mut watcher_map = [[false; 8]; 8];
+    watcher_map[5][3] = true;
+    watcher_map[7][1] = true;
+    watcher_map[7][4] = true;
+    watcher_map[7][5] = true;
+
+    let path = [
+        Square {x: 0, y: 0},
+        Square {x: 1, y: 2},
+        Square {x: 0, y: 0},
+        Square {x: 1, y: 2},
+        Square {x: 0, y: 0},
+        Square {x: 1, y: 2},
+        Square {x: 3, y: 3},
+        Square {x: 5, y: 4},
+    ];
+
+    is_safe_path(path, watcher_map);
+    is_valid_path(path, Square {x: 5, y: 4});
 }
 
 #[test]
