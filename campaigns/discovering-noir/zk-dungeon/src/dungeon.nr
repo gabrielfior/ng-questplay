@@ -8,10 +8,10 @@ struct Square {
 fn is_valid_move(curr_square: Square, next_square: Square) -> bool {
     // valid moves involve x+1 and y+2 OR x+2 and y+1
     // can be 1, -1, 2 or -2
-    std::println(f"curr_square {curr_square} next_square {next_square}");
+    //std::println(f"curr_square {curr_square} next_square {next_square}");
     let diff_x = (next_square.x as i32 - curr_square.x as i32) as i32; 
     let diff_y = (next_square.y as i32 - curr_square.y as i32) as i32;
-    std::println(f"diff x {diff_x} diff_y {diff_y}");
+    //std::println(f"diff x {diff_x} diff_y {diff_y}");
     let mut result = false;
 
     if (diff_x == 1) | (diff_x == -1) {
@@ -48,7 +48,7 @@ pub fn is_valid_path(path: [Square; 8], dagger: Square) {
         let curr_square = path[i];
         let next_square = path[i+1];
         let is_valid_move = is_valid_move(curr_square, next_square);
-        std::println(f"valid_move {is_valid_move} i {i}");
+        //std::println(f"valid_move {is_valid_move} i {i}");
         assert(is_valid_move);
     }
     
@@ -82,13 +82,13 @@ fn fill_matrix_for_coordinates(x:i64, y:i64, mut watcher_map: [[bool; 8]; 8]) ->
 }
 
 fn build_watcher_matrix(mut watcher_map: [[bool; 8]; 8]) -> [[bool; 8]; 8] {
-    std::println("entered build watcher matrix");
+    //std::println("entered build watcher matrix");
     let mut filled_watcher_map = [[false; 8]; 8];
     for i in 0..8 {
         for j in 0..8 {
             let watcher = watcher_map[i][j];
             if (watcher){
-                std::println(f"watcher found i {i} j {j}");
+                //std::println(f"watcher found i {i} j {j}");
                 filled_watcher_map = fill_matrix_for_coordinates(i as i64,j as i64, filled_watcher_map);
             }
         }
